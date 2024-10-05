@@ -1,16 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Creature : MonoBehaviour {
 
     private CreatureState currentState;
+    [SerializeField] private LayerMask creatureLayerMask;
     [SerializeField] private int hunger;
+    [SerializeField] private int hungerStart = 70;
+    [SerializeField] private int rageStart = 0;
+    [SerializeField] private float rageEnemySearchDistance = 5f;
+    [SerializeField] private float rageEnemySearchTime = 0.5f;
+    private float rageEnemySearchTimer = 0;
+    private bool readyToSearch;
+    [SerializeField] private float rageAttackCooldown = 4f;
+    private bool rageAttackOnCooldown;
+    private Transform rageTarget;
+    private Coroutine rageAttackCooldownRoutine;
+    [SerializeField] float killDistance = 0.2f;
 
     private NavMeshAgent agent;
     [SerializeField] private float wanderTime = 3f;
     [SerializeField] private float maxWanderDistance = 3f;
+    private float fedWanderTime = 3f;
+    private float fedMaxWanderDistance = 3f;
+    private float hungryWanderTime = 1.5f;
+    private float hungryMaxWanderDistance = 1.5f;
     private float wanderTimer = 0f;
 
 
@@ -25,41 +42,99 @@ public class Creature : MonoBehaviour {
     }
 
     private void Start() {
+        //CreatureEvents.OnCreatureStateChange += ChangeState;
+
         hungerCoroutine = StartCoroutine(HungerRoutine());
     }
 
     private void OnDestroy() {
-        StopCoroutine(hungerCoroutine);
+        if (hungerCoroutine != null) {
+            StopCoroutine(hungerCoroutine);
+        }
+        
+        if (rageAttackCooldownRoutine != null) {
+            StopCoroutine(rageAttackCooldownRoutine);
+        }
     }
 
-    public void CangeState(CreatureState state) {
+    public void ChangeState(CreatureState state, Transform transform) {
         currentState = state;
+
+        switch (currentState) {
+            case CreatureState.Fed:
+                wanderTime = fedWanderTime;
+                maxWanderDistance = fedMaxWanderDistance;
+                break;
+
+            case CreatureState.Hungry:
+                wanderTime = hungryWanderTime;
+                maxWanderDistance = hungryMaxWanderDistance;
+                break;
+
+            case CreatureState.Rage:
+                agent.speed = agent.speed * 2;
+                readyToSearch = true;
+                break;
+        }
     }
 
     private void Update() {
         transform.forward = Camera.main.transform.forward; // Make sprite look at camera
 
-        wanderTimer += Time.deltaTime;
-        if (wanderTimer > wanderTime) {
-            readyToWander = true;
-            wanderTimer = 0f;
+        if (currentState != CreatureState.Rage) {
+            if (!readyToWander) {
+                wanderTimer += Time.deltaTime;
+                if (wanderTimer > wanderTime) {
+                    readyToWander = true;
+                    wanderTimer = 0f;
+                }
+            }
+        }
+        else {
+            if (!readyToSearch && !rageAttackOnCooldown) {
+                rageEnemySearchTimer += Time.deltaTime;
+                if (rageEnemySearchTimer > rageEnemySearchTime) {
+                    readyToSearch = true;
+                    rageEnemySearchTimer = 0f;
+                }
+            }
         }
 
+        HungerCheck();
         StateBehaviour();
     }
 
     private void StateBehaviour() {
-        Wander();
-
         switch (currentState) {
             case CreatureState.Fed:
+                Wander();
                 break;
 
             case CreatureState.Hungry:
+                Wander();
                 break;
 
-            case CreatureState.Rage: 
+            case CreatureState.Rage:
+                Rage();
+                TargetScan();
                 break;
+        }
+    }
+
+    private void HungerCheck() {
+        if (currentState == CreatureState.Fed && hunger <= hungerStart) {
+            //CreatureEvents.ChangeCreatureState(CreatureState.Hungry, transform);
+            ChangeState(CreatureState.Hungry, transform);
+        }
+        else if (currentState == CreatureState.Hungry) {
+            if (hunger > hungerStart) {
+                //CreatureEvents.ChangeCreatureState(CreatureState.Fed, transform);
+                ChangeState(CreatureState.Fed, transform);
+            }
+            else if (hunger <= rageStart) {
+                //CreatureEvents.ChangeCreatureState(CreatureState.Rage, transform);
+                ChangeState(CreatureState.Rage, transform);
+            }
         }
     }
 
@@ -68,6 +143,40 @@ public class Creature : MonoBehaviour {
             agent.destination = GetRandomPointOnNavmesh();
 
             readyToWander = false;
+        }
+    }
+
+    private void Rage() {
+        if (rageTarget == null) return;
+
+        agent.destination = rageTarget.position;
+
+        if (Vector3.Distance(transform.position, rageTarget.transform.position) < killDistance) {
+            Destroy(rageTarget.gameObject);
+            rageTarget = null;
+        }
+    }
+
+    private void TargetScan() {
+        if (!readyToSearch) return;
+        readyToSearch = false;
+
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, rageEnemySearchDistance / 2, transform.forward, 1f, creatureLayerMask);
+        float closestTargetDistance = Mathf.Infinity;
+        Creature closestTarget = null;
+
+        foreach (RaycastHit hit in hits) {
+            Debug.Log(hit);
+            if (!hit.transform.TryGetComponent<Creature>(out Creature creature)) return;
+            if (creature == this) continue;
+            if (Vector3.Distance(creature.transform.position, transform.position) < closestTargetDistance) {
+                closestTarget = creature;
+            } 
+        }
+
+        if (closestTarget != null) {
+            rageTarget = closestTarget.transform;
+            rageAttackCooldownRoutine = StartCoroutine(RageAttackCooldownRoutine());
         }
     }
 
@@ -86,6 +195,14 @@ public class Creature : MonoBehaviour {
 
             hunger--;
         }
+    }
+
+    private IEnumerator RageAttackCooldownRoutine() {
+        rageAttackOnCooldown = true;
+
+        yield return new WaitForSeconds(rageAttackCooldown);
+
+        rageAttackOnCooldown = false;
     }
 }
 
