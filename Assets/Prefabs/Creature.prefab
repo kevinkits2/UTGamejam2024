@@ -46,7 +46,7 @@ Animator:
   m_GameObject: {fileID: 3755453093664777258}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc2a2d44566ad99418d5824dd0640a1e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8a9fcdf07905d10439da7d853fec997f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1181140295, guid: 840f5d56476b5ae4aba2a19ccda94ccd, type: 3}
+  m_Sprite: {fileID: -1454756694, guid: 37820b09904c5024e91fe1ffac3726b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -126,13 +126,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   multiplyTime: 25
-  hunger: 50
-  hungerStart: 30
-  rageStart: 0
+  hunger: 100
+  hungerStart: 40
+  rageStart: 15
   rageEnemySearchDistance: 5
   rageEnemySearchTime: 0.5
   rageAttackCooldown: 2.5
   killDistance: 0.2
+  hungerDepleteAmount: 4
   wanderTime: 0.1
   maxWanderDistance: 3
   fedSpeed: 1
