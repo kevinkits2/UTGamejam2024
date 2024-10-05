@@ -56,8 +56,6 @@ public class Creature : MonoBehaviour {
     }
 
     private void Start() {
-        //CreatureEvents.OnCreatureStateChange += ChangeState;
-
         hungerCoroutine = StartCoroutine(HungerRoutine());
     }
 
@@ -70,7 +68,7 @@ public class Creature : MonoBehaviour {
             StopCoroutine(rageAttackCooldownRoutine);
         }
 
-        CreatureEvents.CreatureDeath(transform.position);
+        CreatureEvents.CreatureDeath(transform.position, currentState);
     }
 
     public void ChangeState(CreatureState state, Transform transform) {
@@ -157,16 +155,16 @@ public class Creature : MonoBehaviour {
 
     private void HungerCheck() {
         if (currentState == CreatureState.Fed && hunger <= hungerStart) {
-            //CreatureEvents.ChangeCreatureState(CreatureState.Hungry, transform);
+            CreatureEvents.ChangeCreatureState(CreatureState.Hungry, transform);
             ChangeState(CreatureState.Hungry, transform);
         }
         else if (currentState == CreatureState.Hungry) {
             if (hunger > hungerStart) {
-                //CreatureEvents.ChangeCreatureState(CreatureState.Fed, transform);
+                CreatureEvents.ChangeCreatureState(CreatureState.Fed, transform);
                 ChangeState(CreatureState.Fed, transform);
             }
             else if (hunger <= rageStart) {
-                //CreatureEvents.ChangeCreatureState(CreatureState.Rage, transform);
+                CreatureEvents.ChangeCreatureState(CreatureState.Rage, transform);
                 ChangeState(CreatureState.Rage, transform);
             }
         }
