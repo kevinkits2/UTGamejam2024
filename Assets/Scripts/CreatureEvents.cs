@@ -1,18 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureEvents : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public static class CreatureEvents {
+ 
+    public static event Action<CreatureState, Transform> OnCreatureStateChange;
+    public static void ChangeCreatureState(CreatureState state, Transform transform) 
+        => OnCreatureStateChange?.Invoke(state, transform);
 }
