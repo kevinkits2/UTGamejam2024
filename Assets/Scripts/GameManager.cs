@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour {
 
     private void Update() {
         if (aliveCreatures <= 0) {
-            PauseGame();
+            //PauseGame();
         }
     }
 

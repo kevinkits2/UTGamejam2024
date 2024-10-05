@@ -658,6 +658,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3755453093664777258, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1252,6 +1257,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Creature (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755453093664777258, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127303808022390570, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: hunger
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7361479519878919365, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
@@ -1998,6 +2018,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Creature (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755453093664777258, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
@@ -4702,6 +4727,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3755453093664777258, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5439,6 +5469,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3755453093664777258, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5506,6 +5541,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Creature
+      objectReference: {fileID: 0}
+    - target: {fileID: 7361479519878919365, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}

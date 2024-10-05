@@ -46,6 +46,8 @@ public class Creature : MonoBehaviour {
     private float hungerDepleteTime = 1f;
     private Coroutine hungerCoroutine;
 
+    [SerializeField] private bool explode;
+
 
     private void Awake() {
         currentState = CreatureState.Fed;
@@ -93,6 +95,10 @@ public class Creature : MonoBehaviour {
     }
 
     private void Update() {
+        if (explode) {
+            Destroy(gameObject);
+        }
+
         transform.forward = Camera.main.transform.forward; // Make sprite look at camera
         animator.SetFloat("Hunger", hunger);
 
