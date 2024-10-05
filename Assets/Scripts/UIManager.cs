@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
@@ -20,6 +22,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject menuUIHolder;
     [SerializeField] private GameObject gameUIHolder;
     [SerializeField] private GameObject overUIHolder;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private bool isPaused = false;
 
@@ -27,16 +30,17 @@ public class UIManager : MonoBehaviour {
     {
         //Start game from menu button
         startButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             Time.timeScale = 1.0f;
             menuUIHolder.SetActive(false);
             //Some start game call here
             gameUIHolder.SetActive(true);
+            GameManagerEvents.StartGame();
         });
 
         //Exit game from menu button
         exitButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
 #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
 #endif
@@ -45,38 +49,47 @@ public class UIManager : MonoBehaviour {
 
         //Resume from pause button
         resumePauseButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             HandlePause();
+            GameManagerEvents.StartGame();
         });
 
         //To menu from pause button
         menuPauseButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             HandlePause();
             gameUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
+            GameManagerEvents.PauseGame();
         });
 
         //Restart from game end button
         restartButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             overUIHolder.SetActive(false);
             //Some (Re)Start game call here
             gameUIHolder.SetActive(true);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
 
         //To Menu from game end button
         menuEndButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             gameUIHolder.SetActive(false);
             overUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
     }
 
     private void Start()
     {
         inputManager.OnPause += HandlePause;
+        CreatureEvents.OnGeneratePoints += OnGeneratePoints;
+    }
+
+    private void OnGeneratePoints(int points) {
+        scoreText.text = (GameManagerEvents.GetScore() + points).ToString();
     }
 
     private void OnDestroy()

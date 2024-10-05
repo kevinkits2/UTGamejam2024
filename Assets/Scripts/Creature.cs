@@ -28,11 +28,16 @@ public class Creature : MonoBehaviour {
     private NavMeshAgent agent;
     [SerializeField] private float wanderTime = 3f;
     [SerializeField] private float maxWanderDistance = 3f;
-    private float fedWanderTime = 3f;
-    private float fedMaxWanderDistance = 3f;
-    private float hungryWanderTime = 1.5f;
-    private float hungryMaxWanderDistance = 1.5f;
+    [SerializeField] private float fedSpeed = 1;
+    [SerializeField] private float hungerSpeed = 2;
+    [SerializeField] private float rageSpeed = 4;
     private float wanderTimer = 0f;
+
+    private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private int pointsGenerated;
+    [SerializeField] private float pointGenerationTime = 3f;
+    private float pointGenerationTimer;
 
 
     private bool readyToWander;
@@ -42,6 +47,7 @@ public class Creature : MonoBehaviour {
 
     private void Awake() {
         currentState = CreatureState.Fed;
+        spriteRenderer = GetComponent<SpriteRenderer>();
         agent = GetComponent<NavMeshAgent>();
         readyToWander = true;
     }
@@ -69,18 +75,17 @@ public class Creature : MonoBehaviour {
 
         switch (currentState) {
             case CreatureState.Fed:
-                wanderTime = fedWanderTime;
-                maxWanderDistance = fedMaxWanderDistance;
+                agent.speed = fedSpeed;
                 multiplyTimer = 0f;
+                pointGenerationTimer = 0f;
                 break;
 
             case CreatureState.Hungry:
-                wanderTime = hungryWanderTime;
-                maxWanderDistance = hungryMaxWanderDistance;
+                agent.speed = hungerSpeed;
                 break;
 
             case CreatureState.Rage:
-                agent.speed = agent.speed * 2;
+                agent.speed = rageSpeed;
                 readyToSearch = true;
                 break;
         }
@@ -91,9 +96,14 @@ public class Creature : MonoBehaviour {
 
         if (currentState == CreatureState.Fed) {
             multiplyTimer += Time.deltaTime;
+            pointGenerationTimer += Time.deltaTime;
             if (multiplyTimer >= multiplyTime) {
                 Multiply();
                 multiplyTimer = 0f;
+            }
+            if (pointGenerationTimer >= pointGenerationTime) {
+                CreatureEvents.GeneratePoints(pointsGenerated);
+                pointGenerationTimer = 0f;
             }
         }
 
@@ -164,7 +174,16 @@ public class Creature : MonoBehaviour {
 
     private void Wander() {
         if (readyToWander) {
-            agent.destination = GetRandomPointOnNavmesh();
+            Vector3 randomPoint = GetRandomPointOnNavmesh();
+
+            if (transform.position.x - randomPoint.x < 0) {
+                spriteRenderer.flipX = true;
+            }
+            else {
+                spriteRenderer.flipX = false;
+            }
+
+            agent.destination = randomPoint;
 
             readyToWander = false;
         }
@@ -190,7 +209,6 @@ public class Creature : MonoBehaviour {
         Creature closestTarget = null;
 
         foreach (RaycastHit hit in hits) {
-            Debug.Log(hit);
             if (!hit.transform.TryGetComponent<Creature>(out Creature creature)) return;
             if (creature == this) continue;
             if (Vector3.Distance(creature.transform.position, transform.position) < closestTargetDistance) {
@@ -201,6 +219,9 @@ public class Creature : MonoBehaviour {
         if (closestTarget != null) {
             rageTarget = closestTarget.transform;
             rageAttackCooldownRoutine = StartCoroutine(RageAttackCooldownRoutine());
+        }
+        else {
+            readyToSearch = true;
         }
     }
 

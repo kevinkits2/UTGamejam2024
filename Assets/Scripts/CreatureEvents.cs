@@ -11,4 +11,7 @@ public static class CreatureEvents {
 
     public static event Action<Vector3> OnCreatureDeath;
     public static void CreatureDeath(Vector3 pos) => OnCreatureDeath.Invoke(pos);
+
+    public static event Action<int> OnGeneratePoints;
+    public static void GeneratePoints(int points) => OnGeneratePoints?.Invoke(points);
 }
