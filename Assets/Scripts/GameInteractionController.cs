@@ -12,8 +12,9 @@ enum State
 public class GameInteractionController : MonoBehaviour
 {
     [SerializeField] GameObject foodItemTemplate;
+    [SerializeField] GameObject cursor;
     
-    private List<FoodItem> foodItems;
+    private List<FoodItem> foodItems = new List<FoodItem>();
 
     private State state = State.notdragging;
     private FoodItem selectedFoodItem;
@@ -35,18 +36,38 @@ public class GameInteractionController : MonoBehaviour
             }
         }
 
-        // is dragging only, if dragging started above a food item
+        // is dragging only if dragging started above a food item
         if (state == State.dragging)
         {
-                selectedFoodItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            selectedFoodItem.transform.position = mouseWorldPosition();
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButton(0))
         {
-            isOverACreature();
-            isOverAFoodSlot();
-            state = State.notdragging;
+            cursor.transform.position = mouseWorldPosition();
+            print(cursor.transform.position);
         }
+
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    isOverACreature();
+        //    isOverAFoodSlot();
+        //    state = State.notdragging;
+        //}
+    }
+
+    private Vector3 mouseWorldPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var result = Physics.Raycast(ray, out var hit);
+        return hit.point;
+    }
+
+    private Rigidbody objectAtMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var result = Physics.Raycast(ray, out var hit);
+        return hit.rigidbody;
     }
 
     private void isOverAFoodSlot()
@@ -56,8 +77,7 @@ public class GameInteractionController : MonoBehaviour
 
     private FoodItem getFoodItemUnderMouse()
     {
-        var mousePos = Input.mousePosition;
-        var mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        var mouseWorldPos = mouseWorldPosition();
         FoodItem foodItem = null;
         foreach (var item in foodItems)
         {
