@@ -103,7 +103,7 @@ MonoBehaviour:
   creatureLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  multiplyTime: 0.5
+  multiplyTime: 20
   hunger: 100
   hungerStart: 95
   rageStart: 90

@@ -12,7 +12,7 @@ public class Creature : MonoBehaviour {
     [SerializeField] private LayerMask creatureLayerMask;
     [SerializeField] private float multiplyTime;
     private float multiplyTimer;
-    [SerializeField] private int hunger;
+    [SerializeField] private int hunger = 100;
     [SerializeField] private int hungerStart = 70;
     [SerializeField] private int rageStart = 0;
     [SerializeField] private float rageEnemySearchDistance = 5f;
@@ -60,6 +60,8 @@ public class Creature : MonoBehaviour {
         if (rageAttackCooldownRoutine != null) {
             StopCoroutine(rageAttackCooldownRoutine);
         }
+
+        CreatureEvents.CreatureDeath(transform.position);
     }
 
     public void ChangeState(CreatureState state, Transform transform) {
