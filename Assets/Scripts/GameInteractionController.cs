@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -43,9 +44,14 @@ public class GameInteractionController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isOverACreature();
-            isOverA
+            isOverAFoodSlot();
             state = State.notdragging;
         }
+    }
+
+    private void isOverAFoodSlot()
+    {
+        throw new NotImplementedException();
     }
 
     private FoodItem getFoodItemUnderMouse()
@@ -64,10 +70,13 @@ public class GameInteractionController : MonoBehaviour
         return foodItem;
     }
 
-    createNewFoodItem()
+    void createNewFoodItem()
     {
         foodItems.Add(new FoodItem());
     }
     
-    isOverACreature()
+    bool isOverACreature()
+    {
+        throw new NotImplementedException();
+    }
 }   
