@@ -27,7 +27,7 @@ public class AudioPlayer : MonoBehaviour
         {
             menuMusic.Play();
         }
-        else gameMusic.Play();
+        //else gameMusic.Play();
     }
 
     private void OnEnable()

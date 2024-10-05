@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,6 +11,8 @@ public class VolumeManager : MonoBehaviour {
     [SerializeField] private AudioMixer audioMixer;
 
     private const string VolumeKey = "AudioVolume";
+
+    public Action OnVolumeChange;
 
 
     private void Start()
@@ -29,5 +32,6 @@ public class VolumeManager : MonoBehaviour {
         audioMixer.SetFloat("Volume", volume);
         PlayerPrefs.SetFloat(VolumeKey, volume);
         PlayerPrefs.Save(); // Make sure to call Save to persist the changes immediately
+        OnVolumeChange?.Invoke();
     }
 }
