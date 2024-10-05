@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
 
     private void Awake() {
-        PauseGame();
+        //PauseGame();
     }
     private void Start() {
         GameManagerEvents.OnGamePaused += PauseGame;
