@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour {
     {
         //Start game from menu button
         startButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             Time.timeScale = 1.0f;
             menuUIHolder.SetActive(false);
             //Some start game call here
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour {
 
         //Exit game from menu button
         exitButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
 #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
 #endif
@@ -49,14 +49,14 @@ public class UIManager : MonoBehaviour {
 
         //Resume from pause button
         resumePauseButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             HandlePause();
             GameManagerEvents.StartGame();
         });
 
         //To menu from pause button
         menuPauseButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             HandlePause();
             gameUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour {
 
         //Restart from game end button
         restartButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             overUIHolder.SetActive(false);
             //Some (Re)Start game call here
             gameUIHolder.SetActive(true);
@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour {
 
         //To Menu from game end button
         menuEndButton.onClick.AddListener(() => {
-            //AudioPlayer.Instance.ButtonClicked();
+            AudioPlayer.Instance.ButtonClicked();
             gameUIHolder.SetActive(false);
             overUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
