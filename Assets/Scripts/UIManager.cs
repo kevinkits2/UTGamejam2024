@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
+    [SerializeField] private InputManager inputManager;
+
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
 
@@ -74,12 +76,12 @@ public class UIManager : MonoBehaviour {
 
     private void Start()
     {
-        //InputManager.Instance.OnPause += HandlePause;
+        inputManager.OnPause += HandlePause;
     }
 
     private void OnDestroy()
     {
-        //InputManager.Instance.OnPause -= HandlePause;
+        inputManager.OnPause -= HandlePause;
     }
 
     private void HandlePause()
