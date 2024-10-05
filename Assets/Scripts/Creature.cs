@@ -6,8 +6,12 @@ using UnityEngine.AI;
 
 public class Creature : MonoBehaviour {
 
+    [SerializeField] private GameObject creaturePrefab;
+
     private CreatureState currentState;
     [SerializeField] private LayerMask creatureLayerMask;
+    [SerializeField] private float multiplyTime;
+    private float multiplyTimer;
     [SerializeField] private int hunger;
     [SerializeField] private int hungerStart = 70;
     [SerializeField] private int rageStart = 0;
@@ -39,6 +43,7 @@ public class Creature : MonoBehaviour {
     private void Awake() {
         currentState = CreatureState.Fed;
         agent = GetComponent<NavMeshAgent>();
+        readyToWander = true;
     }
 
     private void Start() {
@@ -64,6 +69,7 @@ public class Creature : MonoBehaviour {
             case CreatureState.Fed:
                 wanderTime = fedWanderTime;
                 maxWanderDistance = fedMaxWanderDistance;
+                multiplyTimer = 0f;
                 break;
 
             case CreatureState.Hungry:
@@ -81,16 +87,23 @@ public class Creature : MonoBehaviour {
     private void Update() {
         transform.forward = Camera.main.transform.forward; // Make sprite look at camera
 
-        if (currentState != CreatureState.Rage) {
-            if (!readyToWander) {
-                wanderTimer += Time.deltaTime;
-                if (wanderTimer > wanderTime) {
-                    readyToWander = true;
-                    wanderTimer = 0f;
-                }
+        if (currentState == CreatureState.Fed) {
+            multiplyTimer += Time.deltaTime;
+            if (multiplyTimer >= multiplyTime) {
+                Multiply();
+                multiplyTimer = 0f;
             }
         }
-        else {
+
+        if (!readyToWander) {
+            wanderTimer += Time.deltaTime;
+            if (wanderTimer > wanderTime) {
+                readyToWander = true;
+                wanderTimer = 0f;
+            }
+        }
+
+        if (currentState == CreatureState.Rage) {
             if (!readyToSearch && !rageAttackOnCooldown) {
                 rageEnemySearchTimer += Time.deltaTime;
                 if (rageEnemySearchTimer > rageEnemySearchTime) {
@@ -117,6 +130,11 @@ public class Creature : MonoBehaviour {
             case CreatureState.Rage:
                 Rage();
                 TargetScan();
+                
+                if (rageTarget == null && !rageAttackOnCooldown && !readyToSearch) {
+                    Wander();
+                }
+
                 break;
         }
     }
@@ -136,6 +154,10 @@ public class Creature : MonoBehaviour {
                 ChangeState(CreatureState.Rage, transform);
             }
         }
+    }
+
+    private void Multiply() {
+        Instantiate(creaturePrefab, transform.position, Quaternion.identity);
     }
 
     private void Wander() {
