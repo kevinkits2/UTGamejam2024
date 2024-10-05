@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FoodItem : MonoBehaviour
 {
+    public float radius;
+    public Transform position;
+    
     // Start is called before the first frame update
     void Start()
     {
