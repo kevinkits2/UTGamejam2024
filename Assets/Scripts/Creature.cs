@@ -43,6 +43,7 @@ public class Creature : MonoBehaviour {
     private void Awake() {
         currentState = CreatureState.Fed;
         agent = GetComponent<NavMeshAgent>();
+        readyToWander = true;
     }
 
     private void Start() {

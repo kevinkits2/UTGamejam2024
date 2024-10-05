@@ -103,10 +103,10 @@ MonoBehaviour:
   creatureLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  multiplyTime: 3
+  multiplyTime: 0.5
   hunger: 100
-  hungerStart: 60
-  rageStart: 0
+  hungerStart: 95
+  rageStart: 90
   rageEnemySearchDistance: 5
   rageEnemySearchTime: 0.5
   rageAttackCooldown: 4

@@ -597,6 +597,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature
       objectReference: {fileID: 0}
+    - target: {fileID: 4127303808022390570, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: rageStart
+      value: 94
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127303808022390570, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: multiplyTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127303808022390570, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
+        type: 3}
+      propertyPath: rageAttackCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7498863748067017209, guid: 6c1da4ac43894a84ca6864a9a3ecd5cc,
         type: 3}
       propertyPath: m_LocalPosition.x
