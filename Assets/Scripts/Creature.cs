@@ -28,6 +28,8 @@ public class Creature : MonoBehaviour {
     }
 
     private void Update() {
+        transform.forward = Camera.main.transform.forward; // Make sprite look at camera
+
         StateBehaviour();
     }
 
