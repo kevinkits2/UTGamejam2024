@@ -60,6 +60,8 @@ public class Creature : MonoBehaviour {
         if (rageAttackCooldownRoutine != null) {
             StopCoroutine(rageAttackCooldownRoutine);
         }
+
+        CreatureEvents.CreatureDeath(transform.position);
     }
 
     public void ChangeState(CreatureState state, Transform transform) {
