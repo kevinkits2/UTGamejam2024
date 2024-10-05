@@ -24,6 +24,7 @@ public class Creature : MonoBehaviour {
     private Transform rageTarget;
     private Coroutine rageAttackCooldownRoutine;
     [SerializeField] float killDistance = 0.2f;
+    [SerializeField] int hungerDepleteAmount = 4;
 
     private NavMeshAgent agent;
     [SerializeField] private float wanderTime = 3f;
@@ -34,6 +35,7 @@ public class Creature : MonoBehaviour {
     private float wanderTimer = 0f;
 
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     [SerializeField] private int pointsGenerated;
     [SerializeField] private float pointGenerationTime = 3f;
@@ -48,6 +50,7 @@ public class Creature : MonoBehaviour {
     private void Awake() {
         currentState = CreatureState.Fed;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         readyToWander = true;
     }
@@ -93,6 +96,7 @@ public class Creature : MonoBehaviour {
 
     private void Update() {
         transform.forward = Camera.main.transform.forward; // Make sprite look at camera
+        animator.SetFloat("Hunger", hunger);
 
         if (currentState == CreatureState.Fed) {
             multiplyTimer += Time.deltaTime;
@@ -238,7 +242,7 @@ public class Creature : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds(hungerDepleteTime);
 
-            hunger--;
+            hunger -= hungerDepleteAmount;
         }
     }
 
