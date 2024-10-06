@@ -41,4 +41,10 @@ public static class GameManagerEvents {
     public static event Action OnCreatureFeed;
     public static void CreatureFeed() => OnCreatureFeed?.Invoke();
 
+    public static event Action OnResetScene;
+    public static void ResetScene() => OnResetScene?.Invoke();
+
+    public static event Action OnGameOver;
+    public static void GameOver() => OnGameOver?.Invoke();
+
 }

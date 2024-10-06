@@ -133,7 +133,7 @@ MonoBehaviour:
   rageEnemySearchTime: 0.5
   rageAttackCooldown: 2.5
   killDistance: 0.2
-  hungerDepleteAmount: 4
+  hungerDepleteAmount: 2
   foodValue: 20
   wanderTime: 0.1
   maxWanderDistance: 3
@@ -162,7 +162,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.17
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &5225974399652194762
 NavMeshAgent:

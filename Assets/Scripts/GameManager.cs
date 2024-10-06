@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     private int score;
-    private int aliveCreatures = 5;
+    private int aliveCreatures = 3;
     private bool mouseDown = false;
     private bool foodButtonPressed = false;
 
     private FoodButton foodButton;
+    private bool resettingScene = false;
+
+    [SerializeField] private GameObject creaturePrefab;
+    [SerializeField] private Transform[] spawnPoints;
 
 
     private void Awake() {
-        //PauseGame();
+        PauseGame();
     }
 
     private void Start() {
@@ -27,6 +32,7 @@ public class GameManager : MonoBehaviour {
         GameManagerEvents.OnMouseUp += HandleMouseUp;
         GameManagerEvents.OnFoodButtonPressed += HandleFoodButtonPressed;
         GameManagerEvents.OnCreatureFeed += HandleCreatureFed;
+        GameManagerEvents.OnResetScene += ResetScene;
     }
 
     private void HandleCreatureFed() {
@@ -49,9 +55,40 @@ public class GameManager : MonoBehaviour {
         mouseDown = true;
     }
 
+    private void ResetScene() {
+        resettingScene = true;
+        CreatureEvents.GeneratePoints(0);
+        score = 0;
+
+        foreach (Creature creature in FindObjectsOfType<Creature>()) {
+            Destroy(creature);
+        }
+
+        StartCoroutine(ResetSceneRoutine());
+
+        aliveCreatures = 3;
+        resettingScene = false;
+    }
+
+    private IEnumerator ResetSceneRoutine() {
+
+        yield return new WaitForSeconds(0.1f);
+
+        SpawnCreatures();
+    }
+
+    private void SpawnCreatures() {
+        if (FindObjectsOfType<Creature>().Length == 0) {
+            for (int i = 0; i < 3; i++) {
+                Instantiate(creaturePrefab, spawnPoints[i].position, creaturePrefab.transform.rotation);
+            }
+        }
+    }
+
     private void Update() {
-        if (aliveCreatures <= 0) {
-            //PauseGame();
+        if (aliveCreatures <= 0 && !resettingScene) {
+            PauseGame();
+            GameManagerEvents.GameOver();
         }
 
         if (mouseDown && foodButtonPressed) {

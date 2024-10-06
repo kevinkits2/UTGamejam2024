@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject gameUIHolder;
     [SerializeField] private GameObject overUIHolder;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI gameoverscore;
 
     private bool isPaused = false;
 
@@ -36,6 +37,7 @@ public class UIManager : MonoBehaviour {
             //Some start game call here
             gameUIHolder.SetActive(true);
             GameManagerEvents.StartGame();
+            //GameManagerEvents.ResetScene();
         });
 
         //Exit game from menu button
@@ -60,6 +62,7 @@ public class UIManager : MonoBehaviour {
             HandlePause();
             gameUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
+            overUIHolder.SetActive(false);
             GameManagerEvents.PauseGame();
         });
 
@@ -69,7 +72,7 @@ public class UIManager : MonoBehaviour {
             overUIHolder.SetActive(false);
             //Some (Re)Start game call here
             gameUIHolder.SetActive(true);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //GameManagerEvents.ResetScene();
         });
 
         //To Menu from game end button
@@ -78,7 +81,6 @@ public class UIManager : MonoBehaviour {
             gameUIHolder.SetActive(false);
             overUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
     }
 
@@ -86,6 +88,12 @@ public class UIManager : MonoBehaviour {
     {
         inputManager.OnPause += HandlePause;
         CreatureEvents.OnGeneratePoints += OnGeneratePoints;
+        GameManagerEvents.OnGameOver += HandleGameOver;
+    }
+
+    private void HandleGameOver() {
+        overUIHolder.SetActive(true);
+        gameoverscore.text = GameManagerEvents.GetScore().ToString();
     }
 
     private void OnGeneratePoints(int points) {
