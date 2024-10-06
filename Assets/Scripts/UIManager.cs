@@ -18,12 +18,18 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Button restartButton;
     [SerializeField] private Button menuEndButton;
 
+    [SerializeField] private Button openTutorialButton;
+    [SerializeField] private Button closeTutorialButton;
+
     [SerializeField] private GameObject pauseUIHolder;
     [SerializeField] private GameObject menuUIHolder;
     [SerializeField] private GameObject gameUIHolder;
     [SerializeField] private GameObject overUIHolder;
+    [SerializeField] private GameObject tutorialUIHolder;
+    [SerializeField] private GameObject tutorialButtonHolder;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI gameoverscore;
+
 
     private bool isPaused = false;
 
@@ -34,6 +40,7 @@ public class UIManager : MonoBehaviour {
             AudioPlayer.Instance.ButtonClicked();
             Time.timeScale = 1.0f;
             menuUIHolder.SetActive(false);
+            tutorialButtonHolder.SetActive(false);
             //Some start game call here
             gameUIHolder.SetActive(true);
             GameManagerEvents.StartGame();
@@ -63,6 +70,7 @@ public class UIManager : MonoBehaviour {
             gameUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
             overUIHolder.SetActive(false);
+            tutorialButtonHolder.SetActive(true);
             GameManagerEvents.PauseGame();
         });
 
@@ -81,6 +89,20 @@ public class UIManager : MonoBehaviour {
             gameUIHolder.SetActive(false);
             overUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
+            tutorialButtonHolder.SetActive(true);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        });
+
+        openTutorialButton.onClick.AddListener(() => {
+            AudioPlayer.Instance.ButtonClicked();
+            tutorialUIHolder.SetActive(true);
+            tutorialButtonHolder.SetActive(false);
+        });
+
+        closeTutorialButton.onClick.AddListener(() => {
+            AudioPlayer.Instance.ButtonClicked();
+            tutorialUIHolder.SetActive(false);
+            tutorialButtonHolder.SetActive(true);
         });
     }
 
@@ -107,8 +129,16 @@ public class UIManager : MonoBehaviour {
 
     private void HandlePause()
     {
-        if (isPaused) Time.timeScale = 1.0f;
-        else Time.timeScale = 0.0f;
+        if (isPaused)
+        {
+            Time.timeScale = 1.0f;
+            tutorialButtonHolder.SetActive(false);
+        }
+        else
+        {
+            Time.timeScale = 0.0f;
+            tutorialButtonHolder.SetActive(true);
+        }
         isPaused = !isPaused;
         pauseUIHolder.SetActive(isPaused);
     }
