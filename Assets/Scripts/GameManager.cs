@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     private bool mouseDown = false;
     private bool foodButtonPressed = false;
 
+    private FoodButton foodButton;
+
 
     private void Awake() {
         //PauseGame();
@@ -24,9 +26,18 @@ public class GameManager : MonoBehaviour {
         GameManagerEvents.OnMouseDown += HandleMouseDown;
         GameManagerEvents.OnMouseUp += HandleMouseUp;
         GameManagerEvents.OnFoodButtonPressed += HandleFoodButtonPressed;
+        GameManagerEvents.OnCreatureFeed += HandleCreatureFed;
     }
 
-    private void HandleFoodButtonPressed() {
+    private void HandleCreatureFed() {
+        if (foodButton == null) return;
+
+        foodButton.RemoveFood();
+        foodButton = null;
+    }
+
+    private void HandleFoodButtonPressed(FoodButton foodButton) {
+        this.foodButton = foodButton;
         foodButtonPressed = true;
     }
 

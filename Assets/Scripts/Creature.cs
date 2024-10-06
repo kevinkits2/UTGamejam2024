@@ -26,6 +26,8 @@ public class Creature : MonoBehaviour {
     [SerializeField] float killDistance = 0.2f;
     [SerializeField] int hungerDepleteAmount = 4;
 
+    [SerializeField] private int foodValue = 20;
+
     private NavMeshAgent agent;
     [SerializeField] private float wanderTime = 3f;
     [SerializeField] private float maxWanderDistance = 3f;
@@ -46,6 +48,8 @@ public class Creature : MonoBehaviour {
     private float hungerDepleteTime = 1f;
     private Coroutine hungerCoroutine;
 
+    private bool standingStill = false;
+
     [SerializeField] private bool explode;
 
 
@@ -59,6 +63,11 @@ public class Creature : MonoBehaviour {
 
     private void Start() {
         hungerCoroutine = StartCoroutine(HungerRoutine());
+        GameManagerEvents.OnMouseNotOverCreature += HandleMouseNotOverCreature;
+    }
+
+    private void HandleMouseNotOverCreature() {
+        standingStill = false;
     }
 
     private void OnDestroy() {
@@ -181,6 +190,7 @@ public class Creature : MonoBehaviour {
     }
 
     private void Wander() {
+        if (standingStill) return;
         if (readyToWander) {
             Vector3 randomPoint = GetRandomPointOnNavmesh();
 
@@ -203,9 +213,31 @@ public class Creature : MonoBehaviour {
         agent.destination = rageTarget.position;
 
         if (Vector3.Distance(transform.position, rageTarget.transform.position) < killDistance) {
+            animator.SetTrigger("Eat");
             Destroy(rageTarget.gameObject);
             rageTarget = null;
         }
+    }
+
+    public void Feed() {
+        if (currentState == CreatureState.Rage) return;
+
+        hunger += foodValue;
+        
+        if (hunger > 100) {
+            Destroy(gameObject);
+        }
+    }
+
+    public void StandStill() {
+        if (currentState == CreatureState.Rage) return;
+        agent.destination = transform.position;
+        standingStill = true;
+    }
+
+    public void Move() {
+        if (currentState == CreatureState.Rage) return;
+        standingStill = false;
     }
 
     private void TargetScan() {
