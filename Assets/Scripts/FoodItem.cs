@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class FoodItem : MonoBehaviour
-{
-    public float radius;
-    public Transform position;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class FoodItem : MonoBehaviour {
+
+    private Button button;
+
+
+    private void Awake() {
+        button = GetComponent<Button>();
+
+        button.onClick.AddListener(() => {
+            GameManagerEvents.FoodButtonPress();
+        });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

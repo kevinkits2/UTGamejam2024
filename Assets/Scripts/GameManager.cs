@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
 
     private int score;
     private int aliveCreatures = 5;
+    private bool mouseDown = false;
+    private bool foodButtonPressed = false;
 
 
     private void Awake() {
@@ -19,6 +21,35 @@ public class GameManager : MonoBehaviour {
         GameManagerEvents.OnScoreRequested += HandleScoreRequested;
         CreatureEvents.OnCreatureStateChange += HandleCreatureStateChanged;
         CreatureEvents.OnCreatureDeath += HandleCreatureDeath;
+        GameManagerEvents.OnMouseDown += HandleMouseDown;
+        GameManagerEvents.OnMouseUp += HandleMouseUp;
+        GameManagerEvents.OnFoodButtonPressed += HandleFoodButtonPressed;
+    }
+
+    private void HandleFoodButtonPressed() {
+        foodButtonPressed = true;
+    }
+
+    private void HandleMouseUp() {
+        mouseDown = false;
+    }
+
+    private void HandleMouseDown() {
+        mouseDown = true;
+    }
+
+    private void Update() {
+        if (aliveCreatures <= 0) {
+            //PauseGame();
+        }
+
+        if (mouseDown && foodButtonPressed) {
+            GameManagerEvents.DragFood();
+        }
+        else if (foodButtonPressed && !mouseDown) {
+            GameManagerEvents.StopFoodDrag();
+            foodButtonPressed = false;
+        }
     }
 
     private void HandleCreatureDeath(Vector3 pos, CreatureState state) {
@@ -30,12 +61,6 @@ public class GameManager : MonoBehaviour {
     private void HandleCreatureStateChanged(CreatureState state, Transform transform) {
         if (state == CreatureState.Rage) {
             aliveCreatures--;
-        }
-    }
-
-    private void Update() {
-        if (aliveCreatures <= 0) {
-            //PauseGame();
         }
     }
 
