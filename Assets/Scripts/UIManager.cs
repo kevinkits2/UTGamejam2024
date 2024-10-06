@@ -42,10 +42,6 @@ public class UIManager : MonoBehaviour {
         startButton.onClick.AddListener(() => {
             AudioPlayer.Instance.ButtonClicked();
             Time.timeScale = 1.0f;
-            menuUIHolder.SetActive(false);
-            tutorialButtonHolder.SetActive(false);
-            gameUIHolder.SetActive(true);
-            GameManagerEvents.StartGame();
             door1Animator.SetTrigger("Open");
             door2Animator.SetTrigger("Open");
             //GameManagerEvents.ResetScene();
@@ -152,5 +148,11 @@ public class UIManager : MonoBehaviour {
         }
         isPaused = !isPaused;
         pauseUIHolder.SetActive(isPaused);
+    }
+
+    public void StartGame() {
+        menuUIHolder.SetActive(false);
+        gameUIHolder.SetActive(true);
+        tutorialButtonHolder.SetActive(false);
     }
 }
