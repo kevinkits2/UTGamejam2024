@@ -687,7 +687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &225102771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1015,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &372375516
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3031,8 +3031,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 969219323}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3562,6 +3562,8 @@ MonoBehaviour:
   gameMusic: {fileID: 11400000, guid: f1034af12de8ae64a942cd1a6fb2e622, type: 2}
   buttonClick: {fileID: 11400000, guid: 47d3baacb5fdf7a4b8558a3fb5b332f9, type: 2}
   creatureEaten: {fileID: 11400000, guid: 7f7f8aa5722e92548a8d6261ea978049, type: 2}
+  bugSplat: {fileID: 0}
+  bugCrush: {fileID: 0}
 --- !u!4 &1412787968
 Transform:
   m_ObjectHideFlags: 0
@@ -4222,7 +4224,7 @@ RectTransform:
   m_Father: {fileID: 790435997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
