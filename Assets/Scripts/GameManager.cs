@@ -15,12 +15,10 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private GameObject creaturePrefab;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private GameObject canvas;
 
 
     private void Awake() {
         PauseGame();
-        Instantiate(canvas);
     }
 
     private void Start() {

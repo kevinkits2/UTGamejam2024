@@ -19,10 +19,13 @@ public class AudioClipGroup : ScriptableObject
     static float nextPlayTime = 0;
     public void Play(AudioSource source)
     {
-        if (nextPlayTime > Time.time) return;
+        if (Time.timeScale >= 0.1f) {
+            if (nextPlayTime > Time.time) return;
+        }
         source.clip = AudioClips[Random.Range(0, AudioClips.Count)];
         source.volume = Random.Range(VolumeMin, VolumeMax);
         source.pitch = Random.Range(PitchMin, PitchMax);
+        Debug.Log("Watafak??!?");
         source.Play();
         nextPlayTime = Time.time + Cooldown;
     }

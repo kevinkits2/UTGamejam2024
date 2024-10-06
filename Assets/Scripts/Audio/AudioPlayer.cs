@@ -32,21 +32,6 @@ public class AudioPlayer : MonoBehaviour
     {
         AudioSourcePool.Instance.ResetAudioSources();
         AudioSourcePool.Instance.GetSource();
-
-        if (SceneManager.GetActiveScene().buildIndex >= 2)
-        {
-            StartCoroutine(AudioCoroutine(gameMusic));
-        }
-        else if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            StartCoroutine(AudioCoroutine(menuMusic));
-        }
-    }
-
-    IEnumerator AudioCoroutine(AudioClipGroup audio)
-    {
-        yield return new WaitForSeconds(0.1f);
-        audio.Play();
     }
 
     public void ButtonClicked()

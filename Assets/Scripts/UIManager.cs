@@ -44,7 +44,6 @@ public class UIManager : MonoBehaviour {
             Time.timeScale = 1.0f;
             menuUIHolder.SetActive(false);
             tutorialButtonHolder.SetActive(false);
-            //Some start game call here
             gameUIHolder.SetActive(true);
             GameManagerEvents.StartGame();
             door1Animator.SetTrigger("Open");
