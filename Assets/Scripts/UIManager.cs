@@ -66,35 +66,37 @@ public class UIManager : MonoBehaviour {
         //To menu from pause button
         menuPauseButton.onClick.AddListener(() => {
             AudioPlayer.Instance.ButtonClicked();
-            HandlePause();
-            gameUIHolder.SetActive(false);
-            menuUIHolder.SetActive(true);
-            overUIHolder.SetActive(false);
-            tutorialButtonHolder.SetActive(true);
-            GameManagerEvents.PauseGame();
+            SceneManager.LoadScene("Main");
+            //HandlePause();
+            //gameUIHolder.SetActive(false);
+            //menuUIHolder.SetActive(true);
+            //overUIHolder.SetActive(false);
+            //tutorialButtonHolder.SetActive(true);
+            //GameManagerEvents.PauseGame();
         });
 
         //Restart from game end button
         restartButton.onClick.AddListener(() => {
             AudioPlayer.Instance.ButtonClicked();
-            overUIHolder.SetActive(false);
-            //Some (Re)Start game call here
-            gameUIHolder.SetActive(false);
-            menuUIHolder.SetActive(true);
-            Destroy(FindObjectOfType<Canvas>());
             SceneManager.LoadScene("Main");
+            //overUIHolder.SetActive(false);
+            //Some (Re)Start game call here
+            //gameUIHolder.SetActive(false);
+            //menuUIHolder.SetActive(true);
+            //Destroy(FindObjectOfType<Canvas>());
+            //SceneManager.LoadScene("Main");
             //GameManagerEvents.ResetScene();
         });
 
         //To Menu from game end button
         menuEndButton.onClick.AddListener(() => {
             AudioPlayer.Instance.ButtonClicked();
-            gameUIHolder.SetActive(false);
-            overUIHolder.SetActive(false);
-            menuUIHolder.SetActive(true);
-            tutorialButtonHolder.SetActive(true);
-            Destroy(FindObjectOfType<Canvas>());
             SceneManager.LoadScene("Main");
+            //gameUIHolder.SetActive(false);
+            //overUIHolder.SetActive(false);
+            //menuUIHolder.SetActive(true);
+            //tutorialButtonHolder.SetActive(true);
+            //Destroy(FindObjectOfType<Canvas>());
         });
 
         openTutorialButton.onClick.AddListener(() => {
@@ -154,5 +156,7 @@ public class UIManager : MonoBehaviour {
         menuUIHolder.SetActive(false);
         gameUIHolder.SetActive(true);
         tutorialButtonHolder.SetActive(false);
+        door1Animator.SetTrigger("Started");
+        door2Animator.SetTrigger("Started");
     }
 }
