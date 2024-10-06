@@ -10,11 +10,5 @@ public class FoodItem : MonoBehaviour {
 
     private void Awake() {
         button = GetComponent<Button>();
-
-        button.onClick.AddListener(() => {
-            GameManagerEvents.FoodButtonPress();
-        });
     }
-
-
 }

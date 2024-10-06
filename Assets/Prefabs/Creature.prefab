@@ -108,7 +108,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &4127303808022390570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   rageAttackCooldown: 2.5
   killDistance: 0.2
   hungerDepleteAmount: 4
+  foodValue: 20
   wanderTime: 0.1
   maxWanderDistance: 3
   fedSpeed: 1
@@ -141,6 +142,7 @@ MonoBehaviour:
   rageSpeed: 4
   pointsGenerated: 10
   pointGenerationTime: 3
+  explode: 0
 --- !u!135 &151035341527485773
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -160,7 +162,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.08
+  m_Radius: 0.17
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &5225974399652194762
 NavMeshAgent:
