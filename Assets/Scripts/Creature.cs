@@ -186,7 +186,9 @@ public class Creature : MonoBehaviour {
     }
 
     private void Multiply() {
-        Instantiate(creaturePrefab, transform.position, Quaternion.identity);
+        GameObject newCreature = Instantiate(creaturePrefab, transform.position, Quaternion.identity);
+        newCreature.GetComponent<Creature>().SetHunger(100);
+        GameManagerEvents.Multiply();
     }
 
     private void Wander() {
@@ -215,6 +217,12 @@ public class Creature : MonoBehaviour {
         if (Vector3.Distance(transform.position, rageTarget.transform.position) < killDistance) {
             animator.SetTrigger("Eat");
             Destroy(rageTarget.gameObject);
+            hunger += 50;
+
+            if (hunger > 100) {
+                Destroy(gameObject);
+            }
+
             rageTarget = null;
         }
     }
@@ -263,6 +271,10 @@ public class Creature : MonoBehaviour {
         else {
             readyToSearch = true;
         }
+    }
+
+    public void SetHunger(int amount) {
+        hunger = amount;
     }
 
     private Vector3 GetRandomPointOnNavmesh() {

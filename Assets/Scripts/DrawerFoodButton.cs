@@ -24,8 +24,11 @@ public class DrawerFoodButton : MonoBehaviour {
 
             if (currentSpriteIndex > sprites.Length - 1) {
                 GameManagerEvents.FoodReady(this);
+                AudioPlayer.Instance.PlayBugSplat();
                 return;
             }
+
+            AudioPlayer.Instance.PlayBugCrush();
 
             image.sprite = sprites[currentSpriteIndex];
         });

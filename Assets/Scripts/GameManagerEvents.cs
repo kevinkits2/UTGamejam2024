@@ -47,4 +47,7 @@ public static class GameManagerEvents {
     public static event Action OnGameOver;
     public static void GameOver() => OnGameOver?.Invoke();
 
+    public static event Action OnCreatureMultiply;
+    public static void Multiply() => OnCreatureMultiply?.Invoke();
+
 }

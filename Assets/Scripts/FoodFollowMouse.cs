@@ -12,6 +12,11 @@ public class FoodFollowMouse : MonoBehaviour {
         GameManagerEvents.OnFoodDraggedStopped += HandleFoodDragStopped;
     }
 
+    private void OnDestroy() {
+        GameManagerEvents.OnFoodDragged -= HandleFoodDragged;
+        GameManagerEvents.OnFoodDraggedStopped -= HandleFoodDragStopped;
+    }
+
     private void HandleFoodDragStopped() {
         rectTransform.gameObject.SetActive(false);
     }

@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI gameoverscore;
 
+    [SerializeField] private Animator door1Animator;
+    [SerializeField] private Animator door2Animator;
+
 
     private bool isPaused = false;
 
@@ -44,6 +47,8 @@ public class UIManager : MonoBehaviour {
             //Some start game call here
             gameUIHolder.SetActive(true);
             GameManagerEvents.StartGame();
+            door1Animator.SetTrigger("Open");
+            door2Animator.SetTrigger("Open");
             //GameManagerEvents.ResetScene();
         });
 
@@ -79,7 +84,10 @@ public class UIManager : MonoBehaviour {
             AudioPlayer.Instance.ButtonClicked();
             overUIHolder.SetActive(false);
             //Some (Re)Start game call here
-            gameUIHolder.SetActive(true);
+            gameUIHolder.SetActive(false);
+            menuUIHolder.SetActive(true);
+            Destroy(FindObjectOfType<Canvas>());
+            SceneManager.LoadScene("Main");
             //GameManagerEvents.ResetScene();
         });
 
@@ -90,7 +98,8 @@ public class UIManager : MonoBehaviour {
             overUIHolder.SetActive(false);
             menuUIHolder.SetActive(true);
             tutorialButtonHolder.SetActive(true);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Destroy(FindObjectOfType<Canvas>());
+            SceneManager.LoadScene("Main");
         });
 
         openTutorialButton.onClick.AddListener(() => {
@@ -108,6 +117,7 @@ public class UIManager : MonoBehaviour {
 
     private void Start()
     {
+        inputManager = FindObjectOfType<InputManager>();
         inputManager.OnPause += HandlePause;
         CreatureEvents.OnGeneratePoints += OnGeneratePoints;
         GameManagerEvents.OnGameOver += HandleGameOver;
@@ -125,6 +135,8 @@ public class UIManager : MonoBehaviour {
     private void OnDestroy()
     {
         inputManager.OnPause -= HandlePause;
+        CreatureEvents.OnGeneratePoints -= OnGeneratePoints;
+        GameManagerEvents.OnGameOver -= HandleGameOver;
     }
 
     private void HandlePause()

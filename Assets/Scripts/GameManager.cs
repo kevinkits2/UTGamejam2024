@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private GameObject creaturePrefab;
     [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private GameObject canvas;
 
 
     private void Awake() {
         PauseGame();
+        Instantiate(canvas);
     }
 
     private void Start() {
@@ -33,6 +35,26 @@ public class GameManager : MonoBehaviour {
         GameManagerEvents.OnFoodButtonPressed += HandleFoodButtonPressed;
         GameManagerEvents.OnCreatureFeed += HandleCreatureFed;
         GameManagerEvents.OnResetScene += ResetScene;
+        GameManagerEvents.OnCreatureMultiply += HandleCreatureMultiply;
+    }
+
+    private void OnDestroy() {
+        GameManagerEvents.OnGamePaused -= PauseGame;
+        GameManagerEvents.OnGameStarted -= StartGame;
+        CreatureEvents.OnGeneratePoints -= OnGeneratePoints;
+        GameManagerEvents.OnScoreRequested -= HandleScoreRequested;
+        CreatureEvents.OnCreatureStateChange -= HandleCreatureStateChanged;
+        CreatureEvents.OnCreatureDeath -= HandleCreatureDeath;
+        GameManagerEvents.OnMouseDown -= HandleMouseDown;
+        GameManagerEvents.OnMouseUp -= HandleMouseUp;
+        GameManagerEvents.OnFoodButtonPressed -= HandleFoodButtonPressed;
+        GameManagerEvents.OnCreatureFeed -= HandleCreatureFed;
+        GameManagerEvents.OnResetScene -= ResetScene;
+        GameManagerEvents.OnCreatureMultiply -= HandleCreatureMultiply;
+    }
+
+    private void HandleCreatureMultiply() {
+        aliveCreatures++;
     }
 
     private void HandleCreatureFed() {
@@ -88,6 +110,7 @@ public class GameManager : MonoBehaviour {
     private void Update() {
         if (aliveCreatures <= 0 && !resettingScene) {
             PauseGame();
+            Debug.Log(aliveCreatures);
             GameManagerEvents.GameOver();
         }
 
