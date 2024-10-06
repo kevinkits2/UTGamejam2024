@@ -7,6 +7,9 @@ public class AudioPlayer : MonoBehaviour
     public AudioClipGroup menuMusic;
     public AudioClipGroup gameMusic;
     public AudioClipGroup buttonClick;
+    public AudioClipGroup creatureEaten;
+    public AudioClipGroup bugSplat;
+    public AudioClipGroup bugCrush;
 
     public static AudioPlayer Instance;
 
@@ -21,13 +24,8 @@ public class AudioPlayer : MonoBehaviour
         //DontDestroyOnLoad(Instance);
     }
 
-    void Start()
-    {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            menuMusic.Play();
-        }
-        //else gameMusic.Play();
+    void Start() {
+        PlayMenuMusic();
     }
 
     private void OnEnable()
@@ -56,8 +54,28 @@ public class AudioPlayer : MonoBehaviour
         buttonClick.Play();
     }
 
+    public void PlayMenuMusic()
+    {
+        menuMusic.Play();
+    }
+
     public void PlayGameMusic()
     {
         gameMusic.Play();
+    }
+
+    public void PlayCreatureEaten()
+    {
+        creatureEaten.Play();
+    }
+
+    public void PlayBugSplat()
+    {
+        bugSplat.Play();
+    }
+
+    public void PlayBugCrush()
+    {
+        bugCrush.Play();
     }
 }

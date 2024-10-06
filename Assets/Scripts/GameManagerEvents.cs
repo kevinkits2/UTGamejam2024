@@ -14,8 +14,8 @@ public static class GameManagerEvents {
     public static Func<int> OnScoreRequested;
     public static int GetScore() => OnScoreRequested?.Invoke() ?? 0;
 
-    public static event Action OnFoodButtonPressed;
-    public static void FoodButtonPress() => OnFoodButtonPressed?.Invoke();
+    public static event Action<FoodButton> OnFoodButtonPressed;
+    public static void FoodButtonPress(FoodButton foodButton) => OnFoodButtonPressed?.Invoke(foodButton);
 
     public static event Action OnMouseDown;
     public static void MouseDown() => OnMouseDown?.Invoke();
@@ -28,5 +28,17 @@ public static class GameManagerEvents {
 
     public static event Action OnFoodDraggedStopped;
     public static void StopFoodDrag() => OnFoodDraggedStopped?.Invoke();
+
+    public static event Action<DrawerFoodButton> OnFoodReady;
+    public static void FoodReady(DrawerFoodButton button) => OnFoodReady?.Invoke(button);
+
+    public static event Action OnFoodAdded;
+    public static void FoodAdded() => OnFoodAdded?.Invoke();
+
+    public static event Action OnMouseNotOverCreature;
+    public static void MouseNotOverCreature() => OnMouseNotOverCreature?.Invoke();
+
+    public static event Action OnCreatureFeed;
+    public static void CreatureFeed() => OnCreatureFeed?.Invoke();
 
 }
