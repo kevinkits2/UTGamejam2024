@@ -11,7 +11,7 @@ public class ParticleManager : MonoBehaviour {
         CreatureEvents.OnCreatureDeath += OnCreatureDeath;
     }
 
-    private void OnCreatureDeath(Vector3 pos) {
+    private void OnCreatureDeath(Vector3 pos, CreatureState state) {
         Instantiate(deathEffect, pos, deathEffect.transform.rotation);
     }
 }
