@@ -4,23 +4,32 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-enum State
+enum MouseState
 {
     dragging,
     notdragging
 }
+
 public class GameInteractionController : MonoBehaviour
 {
-    [SerializeField] GameObject foodItemTemplate;
+    [SerializeField] GameObject foodItemPrefab;
     [SerializeField] GameObject cursor;
+    [SerializeField] GameObject foodPanel;
+    [SerializeField] List<GameObject> eightpads;
+    [SerializeField] List<GameObject> sixpads;
     
     private List<FoodItem> foodItems = new List<FoodItem>();
+    private bool foodPanelUp = false;
+    private MouseState state = MouseState.notdragging;
+    private GameObject selectedFoodItem;
 
-    private State state = State.notdragging;
-    private FoodItem selectedFoodItem;
     // Start is called before the first frame update
     void Start()
     {
+        foreach (var pad in eightpads)
+        {
+            Instantiate(foodItemPrefab, pad.transform.position, pad.transform.rotation).transform.parent = foodPanel.transform;
+        }
 
     }
 
@@ -29,74 +38,84 @@ public class GameInteractionController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            selectedFoodItem = getFoodItemUnderMouse();
-            if (selectedFoodItem is not null)
+            var raycast = mouseRaycast();
+            var hitObject = raycast.collider.gameObject;
+            clickMouse(hitObject);
+            if (hitObject.GetComponent<FoodItem>())
             {
-                state = State.dragging;
+                selectedFoodItem = hitObject;
+                print("dragging a food item");
+                state = MouseState.dragging;
+
+                //TODO: exclude dragged item from ray collisions
             }
         }
 
         // is dragging only if dragging started above a food item
-        if (state == State.dragging)
+        if (state == MouseState.dragging)
         {
-            selectedFoodItem.transform.position = mouseWorldPosition();
+            selectedFoodItem.transform.position = mouseRaycast().point;
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            cursor.transform.position = mouseWorldPosition();
-            print(cursor.transform.position);
-        }
-
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    isOverACreature();
-        //    isOverAFoodSlot();
-        //    state = State.notdragging;
-        //}
     }
 
-    private Vector3 mouseWorldPosition()
+
+    RaycastHit mouseRaycast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         var result = Physics.Raycast(ray, out var hit);
-        return hit.point;
+        return hit;
     }
 
-    private Rigidbody objectAtMouse()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var result = Physics.Raycast(ray, out var hit);
-        return hit.rigidbody;
-    }
 
-    private void isOverAFoodSlot()
-    {
-        throw new NotImplementedException();
-    }
-
-    private FoodItem getFoodItemUnderMouse()
-    {
-        var mouseWorldPos = mouseWorldPosition();
-        FoodItem foodItem = null;
-        foreach (var item in foodItems)
-        {
-            if (Vector3.Distance(item.transform.position, mouseWorldPos) <= item.radius)
-            {
-                foodItem = item;
-            }
-        }
-
-        return foodItem;
-    }
 
     void createNewFoodItem()
     {
         foodItems.Add(new FoodItem());
     }
-    
-    bool isOverACreature()
+
+    public void foodPanelButtonClicked()
     {
-        throw new NotImplementedException();
+        foodPanelUp = !foodPanelUp;
+        print(foodPanelUp ? "foodpanel is up" : "foodpanel is down");
+        if(foodPanelUp)
+        {
+            movePanelUp();
+        } else {
+            movePanelDown();
+        }
+    }
+
+    void clickMouse(GameObject clickedObject)
+    {
+        var gameobject = mouseRaycast().collider.gameObject;
+        
+        if (gameobject.GetComponent<panelToggle>())
+        {
+            foodPanelButtonClicked();
+        } else if (gameobject.GetComponent<FoodItem>()) {
+            foodClicked();
+        }
+
+    }
+
+    void foodClicked()
+    {
+        //throw new NotImplementedException();
+    }
+
+    void movePanelDown()
+    {
+        var pos = foodPanel.transform.position;
+        pos.y = 0.474f;
+        foodPanel.transform.position = pos;
+
+    }
+
+    void movePanelUp()
+    {
+        var pos = foodPanel.transform.position;
+        pos.y = 1.0954f;
+        foodPanel.transform.position = pos;
     }
 }   
