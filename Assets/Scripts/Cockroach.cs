@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,8 @@ public class Cockroach : MonoBehaviour {
 
     private NavMeshAgent agent;
     private SpriteRenderer spriteRenderer;
+    private bool readyToWander;
+    private float wanderTimer = 3f;
 
     [SerializeField] private float wanderTime = 3f;
     [SerializeField] private float maxWanderDistance = 3f;
@@ -18,17 +21,34 @@ public class Cockroach : MonoBehaviour {
     }
 
     private void Update() {
-        Vector3 randomPoint = GetRandomPointOnNavmesh();
         transform.forward = Camera.main.transform.forward;
 
-        if (transform.position.x - randomPoint.x < 0) {
-            spriteRenderer.flipX = true;
-        }
-        else {
-            spriteRenderer.flipX = false;
+        if (!readyToWander) {
+            wanderTimer += Time.deltaTime;
+            if (wanderTimer > wanderTime) {
+                readyToWander = true;
+                wanderTimer = 0f;
+            }
         }
 
-        agent.destination = randomPoint;
+        Wander();
+    }
+
+    private void Wander() {
+        if (readyToWander) {
+            Vector3 randomPoint = GetRandomPointOnNavmesh();
+
+            if (transform.position.x - randomPoint.x < 0) {
+                spriteRenderer.flipX = true;
+            }
+            else {
+                spriteRenderer.flipX = false;
+            }
+
+            agent.destination = new Vector3 (randomPoint.x, transform.position.y, randomPoint.z);
+
+            readyToWander = false;
+        }
     }
 
     private Vector3 GetRandomPointOnNavmesh() {

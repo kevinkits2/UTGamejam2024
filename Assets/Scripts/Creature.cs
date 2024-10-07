@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +12,7 @@ public class Creature : MonoBehaviour {
 
     private CreatureState currentState;
     [SerializeField] private LayerMask creatureLayerMask;
+    [SerializeField] private LayerMask cockroachLayerMask;
     [SerializeField] private float multiplyTime;
     private float multiplyTimer;
     [SerializeField] private int hunger = 100;
@@ -22,8 +25,10 @@ public class Creature : MonoBehaviour {
     [SerializeField] private float rageAttackCooldown = 4f;
     private bool rageAttackOnCooldown;
     private Transform rageTarget;
+    private Transform cockroachTarget;
     private Coroutine rageAttackCooldownRoutine;
     [SerializeField] float killDistance = 0.2f;
+    [SerializeField] float cockroachKillDistance = 0.4f;
     [SerializeField] int hungerDepleteAmount = 4;
 
     [SerializeField] private int foodValue = 20;
@@ -90,10 +95,12 @@ public class Creature : MonoBehaviour {
                 agent.speed = fedSpeed;
                 multiplyTimer = 0f;
                 pointGenerationTimer = 0f;
+                readyToSearch = true;
                 break;
 
             case CreatureState.Hungry:
                 agent.speed = hungerSpeed;
+                readyToSearch = true;
                 break;
 
             case CreatureState.Rage:
@@ -133,13 +140,11 @@ public class Creature : MonoBehaviour {
             }
         }
 
-        if (currentState == CreatureState.Rage) {
-            if (!readyToSearch && !rageAttackOnCooldown) {
-                rageEnemySearchTimer += Time.deltaTime;
-                if (rageEnemySearchTimer > rageEnemySearchTime) {
-                    readyToSearch = true;
-                    rageEnemySearchTimer = 0f;
-                }
+        if (!readyToSearch && !rageAttackOnCooldown) {
+            rageEnemySearchTimer += Time.deltaTime;
+            if (rageEnemySearchTimer > rageEnemySearchTime) {
+                readyToSearch = true;
+                rageEnemySearchTimer = 0f;
             }
         }
 
@@ -151,16 +156,22 @@ public class Creature : MonoBehaviour {
         switch (currentState) {
             case CreatureState.Fed:
                 Wander();
+                CockroachScan();
+                CockroachTargetCheck();
                 break;
 
             case CreatureState.Hungry:
                 Wander();
+                CockroachScan();
+                CockroachTargetCheck();
                 break;
 
             case CreatureState.Rage:
                 Rage();
                 TargetScan();
-                
+                CockroachScan();
+                CockroachTargetCheck();
+
                 if (rageTarget == null && !rageAttackOnCooldown && !readyToSearch) {
                     Wander();
                 }
@@ -228,6 +239,24 @@ public class Creature : MonoBehaviour {
         }
     }
 
+    private void CockroachTargetCheck() {
+        if (cockroachTarget == null) return;
+
+        agent.destination = cockroachTarget.position;
+
+        if (Vector3.Distance(transform.position, cockroachTarget.transform.position) < cockroachKillDistance) {
+            animator.SetTrigger("Eat");
+            Destroy(cockroachTarget.gameObject);
+            hunger += 50;
+
+            if (hunger > 100) {
+                Destroy(gameObject);
+            }
+
+            cockroachTarget = null;
+        }
+    }
+
     public void Feed() {
         if (currentState == CreatureState.Rage) return;
 
@@ -269,6 +298,33 @@ public class Creature : MonoBehaviour {
         if (closestTarget != null) {
             rageTarget = closestTarget.transform;
             rageAttackCooldownRoutine = StartCoroutine(RageAttackCooldownRoutine());
+        }
+        else {
+            readyToSearch = true;
+        }
+    }
+
+    private void CockroachScan() {
+        if (!readyToSearch) return;
+        readyToSearch = false;
+
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, rageEnemySearchDistance / 2, transform.forward, 1f, cockroachLayerMask);
+        float closestTargetDistance = Mathf.Infinity;
+        Cockroach closestTarget = null;
+
+        foreach (RaycastHit hit in hits) {
+            if (!hit.transform.TryGetComponent<Cockroach>(out Cockroach cockroach)) return;
+            if (Vector3.Distance(cockroach.transform.position, transform.position) < closestTargetDistance) {
+                closestTarget = cockroach;
+            }
+        }
+
+        if (currentState == CreatureState.Rage && rageTarget != null) {
+            return;
+        }
+
+        if (closestTarget != null) {
+            cockroachTarget = closestTarget.transform;
         }
         else {
             readyToSearch = true;
