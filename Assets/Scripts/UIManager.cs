@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour {
             Time.timeScale = 1.0f;
             door1Animator.SetTrigger("Open");
             door2Animator.SetTrigger("Open");
+            inputManager.OnPause += HandlePause;
             //GameManagerEvents.ResetScene();
         });
 
@@ -115,7 +116,6 @@ public class UIManager : MonoBehaviour {
     private void Start()
     {
         inputManager = FindObjectOfType<InputManager>();
-        inputManager.OnPause += HandlePause;
         CreatureEvents.OnGeneratePoints += OnGeneratePoints;
         GameManagerEvents.OnGameOver += HandleGameOver;
     }
