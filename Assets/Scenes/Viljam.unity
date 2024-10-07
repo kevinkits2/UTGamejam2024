@@ -1090,6 +1090,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1729887880188927365, guid: 261fffdad53881747a640a08397732f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387372564304972415, guid: 261fffdad53881747a640a08397732f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3022564794669981669, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1198,17 +1208,17 @@ PrefabInstance:
     - target: {fileID: 4051298121010693957, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4051298121010693957, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4051298121010693957, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5360235670099366349, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
@@ -1218,12 +1228,12 @@ PrefabInstance:
     - target: {fileID: 6391145250891368219, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6391145250891368219, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8077526317348168577, guid: 261fffdad53881747a640a08397732f3,
         type: 3}
@@ -3732,8 +3742,10 @@ MonoBehaviour:
   gameMusic: {fileID: 11400000, guid: f1034af12de8ae64a942cd1a6fb2e622, type: 2}
   buttonClick: {fileID: 11400000, guid: 47d3baacb5fdf7a4b8558a3fb5b332f9, type: 2}
   creatureEaten: {fileID: 11400000, guid: 7f7f8aa5722e92548a8d6261ea978049, type: 2}
+  creatureFed: {fileID: 0}
   bugSplat: {fileID: 11400000, guid: e3afd1f9290026444a99b9aade1bcdba, type: 2}
   bugCrush: {fileID: 11400000, guid: 42bf6c213d42e9549b510a5f00996f26, type: 2}
+  crazyTransform: {fileID: 0}
 --- !u!4 &2118947896
 Transform:
   m_ObjectHideFlags: 0
