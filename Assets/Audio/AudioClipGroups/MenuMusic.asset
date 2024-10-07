@@ -19,4 +19,4 @@ MonoBehaviour:
   PitchMin: 1
   PitchMax: 1
   Cooldown: 0.02
-  isLooped: 0
+  isLooped: 1

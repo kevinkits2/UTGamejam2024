@@ -125,7 +125,7 @@ MonoBehaviour:
   creatureLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  multiplyTime: 25
+  multiplyTime: 15
   hunger: 100
   hungerStart: 40
   rageStart: 15
@@ -133,7 +133,7 @@ MonoBehaviour:
   rageEnemySearchTime: 0.5
   rageAttackCooldown: 2.5
   killDistance: 0.2
-  hungerDepleteAmount: 2
+  hungerDepleteAmount: 3
   foodValue: 20
   wanderTime: 0.1
   maxWanderDistance: 3

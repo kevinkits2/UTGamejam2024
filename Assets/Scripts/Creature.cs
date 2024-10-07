@@ -78,7 +78,7 @@ public class Creature : MonoBehaviour {
         if (rageAttackCooldownRoutine != null) {
             StopCoroutine(rageAttackCooldownRoutine);
         }
-
+        AudioPlayer.Instance.PlayCreatureEaten();
         CreatureEvents.CreatureDeath(transform.position, currentState);
     }
 
@@ -97,6 +97,7 @@ public class Creature : MonoBehaviour {
                 break;
 
             case CreatureState.Rage:
+                AudioPlayer.Instance.PlayCrazyTransform();
                 agent.speed = rageSpeed;
                 readyToSearch = true;
                 break;
@@ -231,7 +232,8 @@ public class Creature : MonoBehaviour {
         if (currentState == CreatureState.Rage) return;
 
         hunger += foodValue;
-        
+
+        AudioPlayer.Instance.PlayCreatureFed();
         if (hunger > 100) {
             Destroy(gameObject);
         }

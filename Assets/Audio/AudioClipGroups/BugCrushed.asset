@@ -17,6 +17,6 @@ MonoBehaviour:
   VolumeMin: 1
   VolumeMax: 1
   PitchMin: 1
-  PitchMax: 1
+  PitchMax: 1.25
   Cooldown: 0.02
   isLooped: 0

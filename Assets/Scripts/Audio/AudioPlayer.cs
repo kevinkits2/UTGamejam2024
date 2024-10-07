@@ -8,8 +8,10 @@ public class AudioPlayer : MonoBehaviour
     public AudioClipGroup gameMusic;
     public AudioClipGroup buttonClick;
     public AudioClipGroup creatureEaten;
+    public AudioClipGroup creatureFed;
     public AudioClipGroup bugSplat;
     public AudioClipGroup bugCrush;
+    public AudioClipGroup crazyTransform;
 
     public static AudioPlayer Instance;
 
@@ -22,10 +24,6 @@ public class AudioPlayer : MonoBehaviour
         }
         Instance = this;
         //DontDestroyOnLoad(Instance);
-    }
-
-    void Start() {
-        PlayMenuMusic();
     }
 
     private void OnEnable()
@@ -54,6 +52,10 @@ public class AudioPlayer : MonoBehaviour
         creatureEaten.Play();
     }
 
+    public void PlayCreatureFed() {
+        creatureFed.Play();
+    }
+
     public void PlayBugSplat()
     {
         bugSplat.Play();
@@ -62,5 +64,9 @@ public class AudioPlayer : MonoBehaviour
     public void PlayBugCrush()
     {
         bugCrush.Play();
+    }
+
+    public void PlayCrazyTransform() {
+        crazyTransform.Play();
     }
 }

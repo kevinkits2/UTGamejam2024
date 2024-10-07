@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ce4a9a47b4fa93409ad7deaba37b5d2, type: 3}
-  m_Name: CreatureEaten
+  m_Name: CreatureFed
   m_EditorClassIdentifier: 
   AudioClips:
-  - {fileID: 8300000, guid: e6e45856321c9de4b98e70384ecee2d0, type: 3}
+  - {fileID: 8300000, guid: 21191baeb01089741a7da8cdcc55fdf8, type: 3}
   VolumeMin: 1
   VolumeMax: 1
   PitchMin: 1
