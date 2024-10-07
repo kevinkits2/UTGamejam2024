@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         PauseGame();
+        CockroachSpawner spawner = GetComponent<CockroachSpawner>();
+        spawner.enabled = true;
     }
 
     private void Start() {

@@ -125,6 +125,9 @@ MonoBehaviour:
   creatureLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  cockroachLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   multiplyTime: 15
   hunger: 100
   hungerStart: 40
@@ -183,6 +186,6 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.16
-  m_BaseOffset: 0.08
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
