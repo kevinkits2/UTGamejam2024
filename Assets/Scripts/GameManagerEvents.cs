@@ -50,4 +50,7 @@ public static class GameManagerEvents {
     public static event Action OnCreatureMultiply;
     public static void Multiply() => OnCreatureMultiply?.Invoke();
 
+    public static event Action<Creature> OnMouseOverCreature;
+    public static void MouseOverCreature(Creature creature) => OnMouseOverCreature?.Invoke(creature);
+
 }

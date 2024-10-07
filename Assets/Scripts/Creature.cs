@@ -100,6 +100,7 @@ public class Creature : MonoBehaviour {
 
             case CreatureState.Hungry:
                 agent.speed = hungerSpeed;
+                multiplyTimer = 0f;
                 readyToSearch = true;
                 break;
 
@@ -111,6 +112,10 @@ public class Creature : MonoBehaviour {
         }
     }
 
+    public CreatureState GetState() {
+        return currentState;
+    }
+
     private void Update() {
         if (explode) {
             Destroy(gameObject);
@@ -119,7 +124,7 @@ public class Creature : MonoBehaviour {
         transform.forward = Camera.main.transform.forward; // Make sprite look at camera
         animator.SetFloat("Hunger", hunger);
 
-        if (currentState == CreatureState.Fed) {
+        if (currentState == CreatureState.Fed || currentState == CreatureState.Hungry) {
             multiplyTimer += Time.deltaTime;
             pointGenerationTimer += Time.deltaTime;
             if (multiplyTimer >= multiplyTime) {
@@ -248,6 +253,7 @@ public class Creature : MonoBehaviour {
             animator.SetTrigger("Eat");
             Destroy(cockroachTarget.gameObject);
             hunger += 50;
+            AudioPlayer.Instance.PlayCreatureFed();
 
             if (hunger > 100) {
                 Destroy(gameObject);
@@ -277,6 +283,10 @@ public class Creature : MonoBehaviour {
     public void Move() {
         if (currentState == CreatureState.Rage) return;
         standingStill = false;
+    }
+
+    public int GetHunger() {
+        return hunger;
     }
 
     private void TargetScan() {

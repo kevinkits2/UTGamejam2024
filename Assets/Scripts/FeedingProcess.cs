@@ -32,6 +32,11 @@ public class FeedingProcess : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        Feeding();
+        MouseCheck();
+    }
+
+    private void Feeding() {
         if (!draggingFood) return;
 
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -43,6 +48,19 @@ public class FeedingProcess : MonoBehaviour {
             };
 
             creature.StandStill();
+        }
+    }
+
+    private void MouseCheck() {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit)) {
+            if (!hit.transform.TryGetComponent<Creature>(out Creature creature)) {
+                GameManagerEvents.MouseNotOverCreature();
+                return;
+            };
+
+            GameManagerEvents.MouseOverCreature(creature);
         }
     }
 }
